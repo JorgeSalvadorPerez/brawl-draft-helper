@@ -273,11 +273,6 @@ const brawlerTipDataLang = {
     }
 };
 
-function getTipsForBrawler(name) {
-    const langTips = brawlerTipDataLang[currentLang] || brawlerTipDataLang['en'];
-    return langTips[name] || fallbackTipTemplates.map((template) => template(name));
-}
-
 const brawlerGrid = document.querySelector(".brawler-grid");
 const searchInput = document.querySelector("#search-input");
 const sortSelect = document.querySelector("#sort-select");
@@ -314,35 +309,36 @@ const rarityOrder = [
 
 const brawlerTipData = {
     Amber: [
-        "Mantén la distancia con tu disparo cargado y evita el combate cuerpo a cuerpo.",
-        "Usa tu súper para crear control de zona y forzar errores del enemigo."
+        "Keep your distance with charged shots and avoid melee.",
+        "Use your Super to zone and force enemy mistakes."
     ],
     Shelly: [
-        "Aprovecha las paredes y dispara cuando el enemigo se acerque para maximizar daño.",
-        "Guarda tu súper para romper coberturas y presionar el centro del mapa."
+        "Use walls and shoot when enemies approach to maximize damage.",
+        "Save your Super to break cover and pressure the center."
     ],
     Leon: [
-        "Activa tu súper solo cuando estés listo para eliminar al objetivo más débil.",
-        "Mantente oculto en hierba y espera el momento preciso para entrar."
+        "Use your Super only when ready to eliminate a weak target.",
+        "Stay hidden in grass and wait for the right moment to engage."
     ],
     Piper: [
-        "Ataca desde lejos y mantén la distancia para sacar ventaja de su rango.",
-        "No te quedes quieta después del primer disparo; prepárate para esquivar."
+        "Attack from range and maintain distance to use her range advantage.",
+        "Don't stand still after the first shot; be ready to dodge."
     ],
     Spike: [
-        "A pesar de tener baja cantidad de vida, puedes usar tu súper para controlar el área.",
-        "Usa tu ataque principal para mantener distancia y acosar a los enemigos."
+        "Despite low health, use your Super to control areas.",
+        "Use your main attack to keep distance and harass enemies."
     ]
 };
 
 const fallbackTipTemplates = [
-    (name) => `Usa a ${name} con precisión: conoce su rango y posiciónate según su ventaja.`,
-    (name) => `Contra ${name}, evita pelear si no estás en la distancia ideal para su tipo de ataque.`,
-    (name) => `Controla el mapa con ${name} y guarda tu súper para cambiar el momento de la pelea.`
+    (name) => `Use ${name} precisely: know their range and position yourself for the advantage.`,
+    (name) => `Against ${name}, avoid fighting unless you're at the ideal range for their attack type.`,
+    (name) => `Control the map with ${name} and save your Super to shift the fight at the right moment.`
 ];
 
 function getTipsForBrawler(name) {
-    return brawlerTipData[name] || fallbackTipTemplates.map((template) => template(name));
+    const langTips = brawlerTipDataLang[currentLang] || brawlerTipDataLang['en'];
+    return langTips[name] || brawlerTipData[name] || fallbackTipTemplates.map((template) => template(name));
 }
 
 function getTipBrawlerNames() {
