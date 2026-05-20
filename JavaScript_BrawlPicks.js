@@ -105,7 +105,7 @@ const fallbackBrawlers = [
 
 // --- Internationalization (i18n) support ---
 const supportedLangs = ["en", "es"];
-let currentLang = localStorage.getItem("lang") || "en";
+let currentLang = "en";
 
 const translations = {
     en: {
@@ -140,7 +140,7 @@ const translations = {
         "label.search": "Buscar",
         "placeholder.search": "Buscar brawler",
         "label.sort": "Ordenar por",
-        "option.alphabetical": "Orden alfabético",
+        "option.alphabetical": "Alfabeto",
         "option.rarity": "Rareza",
         "label.direction": "Direccion",
         "option.asc": "Ascendente",
@@ -273,24 +273,9 @@ const brawlerTipDataLang = {
     }
 };
 
-const fallbackTipTemplatesLang = {
-    en: [
-        (name) => `Use ${name} with precision: know their range and position accordingly.`,
-        (name) => `Against ${name}, avoid fighting if you're not at the ideal distance for their attack.`,
-        (name) => `Control the map with ${name} and save your Super to change the flow of the fight.`
-    ],
-    es: [
-        (name) => `Usa a ${name} con precisión: conoce su rango y posiciónate según su ventaja.`,
-        (name) => `Contra ${name}, evita pelear si no estás en la distancia ideal para su tipo de ataque.`,
-        (name) => `Controla el mapa con ${name} y guarda tu súper para cambiar el momento de la pelea.`
-    ]
-};
-
 function getTipsForBrawler(name) {
     const langTips = brawlerTipDataLang[currentLang] || brawlerTipDataLang['en'];
-    if (langTips[name]) return langTips[name];
-    const fallbacks = fallbackTipTemplatesLang[currentLang] || fallbackTipTemplatesLang['en'];
-    return fallbacks.map((template) => template(name));
+    return langTips[name] || fallbackTipTemplates.map((template) => template(name));
 }
 
 const brawlerGrid = document.querySelector(".brawler-grid");
@@ -767,19 +752,6 @@ slots.forEach((slot) => {
 searchInput.addEventListener("input", updateBrawlerList);
 sortSelect.addEventListener("change", updateBrawlerList);
 directionSelect.addEventListener("change", updateBrawlerList);
-
-// Language toggle button
-const langBtn = document.querySelector('#lang-toggle');
-if (langBtn) {
-    langBtn.addEventListener('click', () => {
-        const newLang = currentLang === 'en' ? 'es' : 'en';
-        applyTranslations(newLang);
-        langBtn.textContent = translations[newLang]['lang.button'] || langBtn.textContent;
-    });
-}
-
-// Apply translations initially (default English)
-applyTranslations(currentLang);
 
 loadLatestBrawlers();
 startTipRotation();
