@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl Draft Helper</title>
+    <link rel="stylesheet" href="CSS-BrawlPicks.css">
+</head>
+<body>
+    <main class="draft-layout">
+        <aside class="brawler-panel">
+            <h1>Brawl Draft Helper</h1>
+
+            <div class="panel-controls">
+                <label for="search-input">Buscar</label>
+                <input id="search-input" type="search" placeholder="Buscar brawler">
+
+                <label for="sort-select">Ordenar por</label>
+                <select id="sort-select">
+                    <option value="alphabetical">Alfabeto</option>
+                    <option value="rarity">Rareza</option>
+                </select>
+
+                <label for="direction-select">Direccion</label>
+                <select id="direction-select">
+                    <option value="asc">Ascendente</option>
+                    <option value="desc">Descendente</option>
+                </select>
+            </div>
+
+            <div class="brawler-list">
+                <div class="brawler-grid"></div>
+            </div>
+        </aside>
+
+        <section class="draft-board">
+            <div class="draft-center">
+                <div class="pick-container">
+                    <div class="pick-slot" data-placeholder="PICK 1">PICK 1</div>
+                    <div class="pick-slot" data-placeholder="PICK 2">PICK 2</div>
+                    <div class="pick-slot" data-placeholder="PICK 3">PICK 3</div>
+                </div>
+                <div class="ban-container">
+                    <div class="ban-slot" data-placeholder="BAN 1">BAN 1</div>
+                    <div class="ban-slot" data-placeholder="BAN 2">BAN 2</div>
+                    <div class="ban-slot" data-placeholder="BAN 3">BAN 3</div>
+                </div>
+                <div class="tip-panel">
+                    <h3>Tip de brawler</h3>
+                    <div class="tip-timer">
+                        <span class="tip-timer-label">Tiempo restante:</span>
+                        <span class="tip-timer-value">8s</span>
+                        <div class="tip-progress">
+                            <div class="tip-progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="tip-details">
+                        <span class="tip-brawler-name">Cargando...</span>
+                        <p class="tip-text">Los consejos rotan automáticamente cada 8 segundos.</p>
+                        <span class="tip-note">Consejos dinámicos y cambiantes.</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="recommendation-panel">
+                <h2>Recomendaciones</h2>
+                <p class="recommendation-empty">Arrastra un brawler enemigo para ver counters.</p>
+                <div class="recommendation-list"></div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="Brawlers.js"></script>
+    <script src="JavaScript_BrawlPicks.js"></script>
+</body>
+</html>
