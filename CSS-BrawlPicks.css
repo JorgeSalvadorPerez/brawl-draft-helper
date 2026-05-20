@@ -64,6 +64,36 @@ h1 {
     grid-column: 1 / -1;
 }
 
+/* Language toggle button (placed at top-right of the central panel) */
+#lang-toggle,
+.lang-toggle {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    padding: 8px 14px;
+    background: linear-gradient(90deg, #ffd21f, #ffb347);
+    color: #111;
+    border: 0;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+    z-index: 60;
+}
+
+#lang-toggle:hover,
+.lang-toggle:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+
+#lang-toggle:active,
+.lang-toggle:active {
+    transform: translateY(-1px);
+}
+
 .brawler-list {
     min-height: 0;
     overflow-y: auto;
@@ -491,6 +521,16 @@ h1 {
         align-items: flex-start;
         padding: 12px;
         gap: 10px;
+    }
+
+    /* Make language button flow naturally on small screens */
+    #lang-toggle,
+    .lang-toggle {
+        position: static;
+        margin-left: auto;
+        align-self: flex-end;
+        box-shadow: none;
+        background: linear-gradient(90deg, #ffd21f, #ffb347);
     }
 
     .tip-timer {

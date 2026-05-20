@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +9,24 @@
 <body>
     <main class="draft-layout">
         <aside class="brawler-panel">
-            <h1>Brawl Draft Helper</h1>
+            <div class="panel-header">
+                <h1 data-i18n="title">Brawl Draft Helper</h1>
+            </div>
 
             <div class="panel-controls">
-                <label for="search-input">Buscar</label>
-                <input id="search-input" type="search" placeholder="Buscar brawler">
+                <label for="search-input" data-i18n="label.search">Search</label>
+                <input id="search-input" type="search" data-i18n-placeholder="placeholder.search" placeholder="Search brawler">
 
-                <label for="sort-select">Ordenar por</label>
+                <label for="sort-select" data-i18n="label.sort">Sort by</label>
                 <select id="sort-select">
-                    <option value="alphabetical">Alfabeto</option>
-                    <option value="rarity">Rareza</option>
+                    <option value="alphabetical" data-i18n="option.alphabetical">Alphabetical</option>
+                    <option value="rarity" data-i18n="option.rarity">Rarity</option>
                 </select>
 
-                <label for="direction-select">Direccion</label>
+                <label for="direction-select" data-i18n="label.direction">Direction</label>
                 <select id="direction-select">
-                    <option value="asc">Ascendente</option>
-                    <option value="desc">Descendente</option>
+                    <option value="asc" data-i18n="option.asc">Ascending</option>
+                    <option value="desc" data-i18n="option.desc">Descending</option>
                 </select>
             </div>
 
@@ -35,36 +37,37 @@
 
         <section class="draft-board">
             <div class="draft-center">
+                <button id="lang-toggle" class="lang-toggle" aria-label="Change language">Español</button>
                 <div class="pick-container">
-                    <div class="pick-slot" data-placeholder="PICK 1">PICK 1</div>
-                    <div class="pick-slot" data-placeholder="PICK 2">PICK 2</div>
-                    <div class="pick-slot" data-placeholder="PICK 3">PICK 3</div>
+                    <div class="pick-slot" data-placeholder="PICK 1" data-i18n-placeholder="placeholder.pick1">PICK 1</div>
+                    <div class="pick-slot" data-placeholder="PICK 2" data-i18n-placeholder="placeholder.pick2">PICK 2</div>
+                    <div class="pick-slot" data-placeholder="PICK 3" data-i18n-placeholder="placeholder.pick3">PICK 3</div>
                 </div>
                 <div class="ban-container">
-                    <div class="ban-slot" data-placeholder="BAN 1">BAN 1</div>
-                    <div class="ban-slot" data-placeholder="BAN 2">BAN 2</div>
-                    <div class="ban-slot" data-placeholder="BAN 3">BAN 3</div>
+                    <div class="ban-slot" data-placeholder="BAN 1" data-i18n-placeholder="placeholder.ban1">BAN 1</div>
+                    <div class="ban-slot" data-placeholder="BAN 2" data-i18n-placeholder="placeholder.ban2">BAN 2</div>
+                    <div class="ban-slot" data-placeholder="BAN 3" data-i18n-placeholder="placeholder.ban3">BAN 3</div>
                 </div>
                 <div class="tip-panel">
-                    <h3>Tip de brawler</h3>
+                    <h3 data-i18n="tip.title">Brawler Tip</h3>
                     <div class="tip-timer">
-                        <span class="tip-timer-label">Tiempo restante:</span>
+                        <span class="tip-timer-label">Time remaining:</span>
                         <span class="tip-timer-value">8s</span>
                         <div class="tip-progress">
                             <div class="tip-progress-fill"></div>
                         </div>
                     </div>
                     <div class="tip-details">
-                        <span class="tip-brawler-name">Cargando...</span>
-                        <p class="tip-text">Los consejos rotan automáticamente cada 8 segundos.</p>
-                        <span class="tip-note">Consejos dinámicos y cambiantes.</span>
+                        <span class="tip-brawler-name">Loading...</span>
+                        <p class="tip-text">Tips rotate automatically every 8 seconds.</p>
+                        <span class="tip-note">Dynamic rotating tips.</span>
                     </div>
                 </div>
             </div>
 
             <aside class="recommendation-panel">
-                <h2>Recomendaciones</h2>
-                <p class="recommendation-empty">Arrastra un brawler enemigo para ver counters.</p>
+                <h2 data-i18n="recommendations.title">Recommendations</h2>
+                <p class="recommendation-empty">Drag an enemy brawler to see counters.</p>
                 <div class="recommendation-list"></div>
             </aside>
         </section>

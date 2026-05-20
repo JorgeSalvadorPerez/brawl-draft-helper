@@ -103,6 +103,196 @@ const fallbackBrawlers = [
     { name: "Shelly", rarity: "Common" }
 ];
 
+// --- Internationalization (i18n) support ---
+const supportedLangs = ["en", "es"];
+let currentLang = localStorage.getItem("lang") || "en";
+
+const translations = {
+    en: {
+        title: "Brawl Draft Helper",
+        "label.search": "Search",
+        "placeholder.search": "Search brawler",
+        "label.sort": "Sort by",
+        "option.alphabetical": "Alphabetical",
+        "option.rarity": "Rarity",
+        "label.direction": "Direction",
+        "option.asc": "Ascending",
+        "option.desc": "Descending",
+        "tip.title": "Brawler Tip",
+        "tip.loading": "Loading...",
+        "tip.rotate": "Tips rotate automatically every 8 seconds.",
+        "tip.note": "Dynamic rotating tips.",
+        "tip.timerLabel": "Time remaining:",
+        "recommendations.title": "Recommendations",
+        "recommendation.empty.drag": "Drag an enemy brawler to see counters.",
+        "recommendation.empty.noCounters": "No counters loaded for that combination yet.",
+        "recommendation.meta": "Covers {score}/{total}: {list}",
+        "placeholder.pick1": "PICK 1",
+        "placeholder.pick2": "PICK 2",
+        "placeholder.pick3": "PICK 3",
+        "placeholder.ban1": "BAN 1",
+        "placeholder.ban2": "BAN 2",
+        "placeholder.ban3": "BAN 3",
+        "lang.button": "Español"
+    },
+    es: {
+        title: "Brawl Draft Helper",
+        "label.search": "Buscar",
+        "placeholder.search": "Buscar brawler",
+        "label.sort": "Ordenar por",
+        "option.alphabetical": "Orden alfabético",
+        "option.rarity": "Rareza",
+        "label.direction": "Direccion",
+        "option.asc": "Ascendente",
+        "option.desc": "Descendente",
+        "tip.title": "Tip de brawler",
+        "tip.loading": "Cargando...",
+        "tip.rotate": "Los consejos rotan automáticamente cada 8 segundos.",
+        "tip.note": "Consejos dinámicos y cambiantes.",
+        "tip.timerLabel": "Tiempo restante:",
+        "recommendations.title": "Recomendaciones",
+        "recommendation.empty.drag": "Arrastra un brawler enemigo para ver counters.",
+        "recommendation.empty.noCounters": "Todavia no hay counters cargados para esa combinacion.",
+        "recommendation.meta": "Cubre {score}/{total}: {list}",
+        "placeholder.pick1": "PICK 1",
+        "placeholder.pick2": "PICK 2",
+        "placeholder.pick3": "PICK 3",
+        "placeholder.ban1": "BAN 1",
+        "placeholder.ban2": "BAN 2",
+        "placeholder.ban3": "BAN 3",
+        "lang.button": "English"
+    }
+};
+
+function t(key, vars) {
+    let txt = (translations[currentLang] && translations[currentLang][key]) || translations["en"][key] || key;
+    if (vars) {
+        Object.keys(vars).forEach((k) => {
+            txt = txt.replace(new RegExp(`\\{${k}\\}`, "g"), vars[k]);
+        });
+    }
+    return txt;
+}
+
+function applyTranslations(lang) {
+    if (!supportedLangs.includes(lang)) lang = "en";
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.dataset.i18n;
+        if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.dataset.i18nPlaceholder || el.dataset.i18nPlaceholder;
+        if (translations[lang] && translations[lang][key]) el.placeholder = translations[lang][key];
+    });
+
+    document.querySelectorAll("[data-i18n] option, [data-i18n] optgroup");
+
+    // Update select option texts
+    document.querySelectorAll("#sort-select option, #direction-select option").forEach((opt) => {
+        if (opt.dataset.i18n) {
+            opt.textContent = translations[lang][opt.dataset.i18n] || opt.textContent;
+        }
+    });
+
+    // Update pick/ban placeholders
+    document.querySelectorAll('.pick-slot, .ban-slot').forEach((slot) => {
+        const key = slot.dataset.i18nPlaceholder;
+        if (key && translations[lang] && translations[lang][key]) {
+            slot.dataset.placeholder = translations[lang][key];
+            if (!slot.classList.contains('filled')) slot.textContent = slot.dataset.placeholder;
+        }
+    });
+
+    // Update some dynamic labels
+    if (tipBrawlerName) tipBrawlerName.textContent = t('tip.loading');
+    if (tipText) tipText.textContent = t('tip.rotate');
+    if (tipNote) tipNote.textContent = t('tip.note');
+    const timerLabel = document.querySelector('.tip-timer-label');
+    if (timerLabel) timerLabel.textContent = t('tip.timerLabel');
+
+    const recHeader = document.querySelector('.recommendation-panel h2');
+    if (recHeader) recHeader.textContent = t('recommendations.title');
+
+    const langBtn = document.querySelector('#lang-toggle');
+    if (langBtn) langBtn.textContent = translations[lang]['lang.button'] || langBtn.textContent;
+
+    // Refresh recommendations text
+    updateRecommendations();
+}
+
+// Tips content per language
+const brawlerTipDataLang = {
+    en: {
+        Amber: [
+            "Keep your distance with charged shots and avoid melee.",
+            "Use your Super to zone and force enemy mistakes."
+        ],
+        Shelly: [
+            "Use walls and shoot when enemies approach to maximize damage.",
+            "Save your Super to break cover and pressure the center."
+        ],
+        Leon: [
+            "Use your Super only when ready to eliminate a weak target.",
+            "Stay hidden in grass and wait for the right moment to engage."
+        ],
+        Piper: [
+            "Attack from range and maintain distance to use her range advantage.",
+            "Don't stand still after the first shot; be ready to dodge."
+        ],
+        Spike: [
+            "Despite low health, use your Super to control areas.",
+            "Use your main attack to keep distance and harass enemies."
+        ]
+    },
+    es: {
+        Amber: [
+            "Mantén la distancia con tu disparo cargado y evita el combate cuerpo a cuerpo.",
+            "Usa tu súper para crear control de zona y forzar errores del enemigo."
+        ],
+        Shelly: [
+            "Aprovecha las paredes y dispara cuando el enemigo se acerque para maximizar daño.",
+            "Guarda tu súper para romper coberturas y presionar el centro del mapa."
+        ],
+        Leon: [
+            "Activa tu súper solo cuando estés listo para eliminar al objetivo más débil.",
+            "Mantente oculto en hierba y espera el momento preciso para entrar."
+        ],
+        Piper: [
+            "Ataca desde lejos y mantén la distancia para sacar ventaja de su rango.",
+            "No te quedes quieta después del primer disparo; prepárate para esquivar."
+        ],
+        Spike: [
+            "A pesar de tener baja cantidad de vida, puedes usar tu súper para controlar el área.",
+            "Usa tu ataque principal para mantener distancia y acosar a los enemigos."
+        ]
+    }
+};
+
+const fallbackTipTemplatesLang = {
+    en: [
+        (name) => `Use ${name} with precision: know their range and position accordingly.`,
+        (name) => `Against ${name}, avoid fighting if you're not at the ideal distance for their attack.`,
+        (name) => `Control the map with ${name} and save your Super to change the flow of the fight.`
+    ],
+    es: [
+        (name) => `Usa a ${name} con precisión: conoce su rango y posiciónate según su ventaja.`,
+        (name) => `Contra ${name}, evita pelear si no estás en la distancia ideal para su tipo de ataque.`,
+        (name) => `Controla el mapa con ${name} y guarda tu súper para cambiar el momento de la pelea.`
+    ]
+};
+
+function getTipsForBrawler(name) {
+    const langTips = brawlerTipDataLang[currentLang] || brawlerTipDataLang['en'];
+    if (langTips[name]) return langTips[name];
+    const fallbacks = fallbackTipTemplatesLang[currentLang] || fallbackTipTemplatesLang['en'];
+    return fallbacks.map((template) => template(name));
+}
+
 const brawlerGrid = document.querySelector(".brawler-grid");
 const searchInput = document.querySelector("#search-input");
 const sortSelect = document.querySelector("#sort-select");
@@ -221,8 +411,8 @@ function updateTipSection() {
     const tipNames = getTipBrawlerNames();
 
     if (tipNames.length === 0) {
-        if (tipBrawlerName) tipBrawlerName.textContent = "Cargando...";
-        if (tipText) tipText.textContent = "Los consejos rotan automáticamente cada 8 segundos.";
+        if (tipBrawlerName) tipBrawlerName.textContent = t('tip.loading');
+        if (tipText) tipText.textContent = t('tip.rotate');
         resetTipTimer();
         return;
     }
@@ -468,9 +658,7 @@ function updateRecommendations() {
     if (recommendations.length === 0) {
         recommendationEmpty.hidden = false;
         recommendationEmpty.textContent =
-            selectedEnemies.length === 0
-                ? "Arrastra un brawler enemigo para ver counters."
-                : "Todavia no hay counters cargados para esa combinacion.";
+            selectedEnemies.length === 0 ? t('recommendation.empty.drag') : t('recommendation.empty.noCounters');
         return;
     }
 
@@ -503,7 +691,11 @@ function updateRecommendations() {
 
         const meta = document.createElement("span");
         meta.className = "recommendation-meta";
-        meta.textContent = `Cubre ${recommendation.score}/${selectedEnemies.length}: ${recommendation.coveredEnemies.join(", ")}`;
+        meta.textContent = t('recommendation.meta', {
+            score: recommendation.score,
+            total: selectedEnemies.length,
+            list: recommendation.coveredEnemies.join(', ')
+        });
 
         content.append(name, meta);
 
@@ -575,6 +767,19 @@ slots.forEach((slot) => {
 searchInput.addEventListener("input", updateBrawlerList);
 sortSelect.addEventListener("change", updateBrawlerList);
 directionSelect.addEventListener("change", updateBrawlerList);
+
+// Language toggle button
+const langBtn = document.querySelector('#lang-toggle');
+if (langBtn) {
+    langBtn.addEventListener('click', () => {
+        const newLang = currentLang === 'en' ? 'es' : 'en';
+        applyTranslations(newLang);
+        langBtn.textContent = translations[newLang]['lang.button'] || langBtn.textContent;
+    });
+}
+
+// Apply translations initially (default English)
+applyTranslations(currentLang);
 
 loadLatestBrawlers();
 startTipRotation();
