@@ -523,14 +523,27 @@ h1 {
         gap: 10px;
     }
 
-    /* Make language button flow naturally on small screens */
+    /* Place language button at top-right of the central panel on small screens */
     #lang-toggle,
     .lang-toggle {
-        position: static;
-        margin-left: auto;
-        align-self: flex-end;
-        box-shadow: none;
-        background: linear-gradient(90deg, #ffd21f, #ffb347);
+        position: absolute;
+        top: 10px;
+        right: 18px;
+        z-index: 80;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    /* Center the header title on narrower screens */
+    .panel-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .panel-header h1 {
+        text-align: center;
+        width: 100%;
     }
 
     .tip-timer {
@@ -604,15 +617,16 @@ h1 {
     }
 
     .recommendation-list {
-        display: flex;
+        display: grid;
         gap: 8px;
-        overflow-x: auto;
+        grid-template-columns: 1fr;
         padding-bottom: 6px;
+        overflow: visible;
     }
 
     .recommendation-item {
-        min-width: 160px;
-        flex: 0 0 auto;
+        min-width: 0;
+        flex: none;
     }
 
     /* Ajustes del tip-panel para no ocupar demasiado espacio */
